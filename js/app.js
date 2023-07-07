@@ -8,6 +8,7 @@ const planetDescriptionImgWrapperEl = planetDescription.querySelector('.planet_d
 const tabsButtons = planetTabs.querySelectorAll('.planet_description_btn');
 const planetDescriptionContent = planetDescription.querySelector('.planet_description_content');
 
+let isNavClosed = false;
 let planetsData;
 let planetData;
 let activeTabName;
@@ -19,6 +20,33 @@ const imagesKeysByTab = {
   structure: 'internal',
   geology: 'geology'
 };
+
+
+const handleNavLinkListCLick = async (e) =>  {
+  const link = e.target.closest('a');
+  if (!link) return;
+
+  planetName = link.dataset.planet?.toLowerCase();
+
+  if (!planetName) return;
+  if (prevPlanetName && planetName === prevPlanetName) return;
+  prevPlanetName = planetName;
+
+  renderPlanetData();
+}
+
+const switchTab = (e) => {
+  const btn = e.currentTarget;
+
+  activeTabName = btn.dataset.tab ?? 'overview';
+  if (!planetData[activeTabName]) return;
+  setActiveTabBtn(btn);
+  setActiveTab(activeTabName);
+  switchPlanetImage();
+  setPlanetInfo(activeTabName);
+
+}
+
 
 navLinkList.addEventListener('click', handleNavLinkListCLick);
 tabsButtons.forEach(btn => btn.addEventListener('click', switchTab));
@@ -32,7 +60,7 @@ tabsButtons.forEach(btn => btn.addEventListener('click', switchTab));
   renderPlanetData(planetName)
 })()
 
-function renderPlanetData() {
+const renderPlanetData = () => {
   planetData = getPlanetData(planetName);
   activeTabName = 'overview';
 
@@ -43,7 +71,7 @@ function renderPlanetData() {
   getPlanetImage();
 }
 
-function setPlanetInfo(activeTab) {
+const setPlanetInfo = (activeTab) => {
   const planetRotation = document.querySelector('.planet_rotation');
   const planetRevolution = document.querySelector('.planet_revolution');
   const planetRadius = document.querySelector('.planet_radius');
@@ -61,22 +89,9 @@ function setPlanetInfo(activeTab) {
   textSource.href = activeTab ? planetData[activeTab].source : planetData.overview.source
 }
 
-async function handleNavLinkListCLick(e) {
-  const link = e.target.closest('a');
-  if (!link) return;
-
-  planetName = link.dataset.planet?.toLowerCase();
-
-  if (!planetName) return;
-  if (prevPlanetName && planetName === prevPlanetName) return;
-  prevPlanetName = planetName;
-
-  renderPlanetData();
-}
 
 
-
-function setActiveHeaderLink() {
+const setActiveHeaderLink = () => {
   document.documentElement.style.setProperty('--nav_active', planetData.color);
 
   Array.prototype.forEach.call(navLinkList.children, li => {
@@ -91,44 +106,31 @@ function setActiveHeaderLink() {
 
 
 
-function switchTab(e) {
-  const btn = e.currentTarget;
-
-  activeTabName = btn.dataset.tab ?? 'overview';
-  if (!planetData[activeTabName]) return;
-  setActiveTabBtn(btn);
-  setActiveTab(activeTabName);
-  switchPlanetImage();
-  setPlanetInfo(activeTabName);
-
-}
-
-
-function resetActiveTabBtn() {
+const resetActiveTabBtn = () => {
   tabsButtons.forEach(btn => btn.classList.remove('active'));
   tabsButtons[0].classList.add('active');
 }
 
-function getPlanetImage() {
+const getPlanetImage = () => {
   planetImage.src = planetData.images.planet;
 }
 
 
 
-function getPlanetData(name) {
+const getPlanetData = (name) => {
   return planetsData.find(data => data.name?.toLowerCase() === name.toLowerCase());
 }
 
 
 
-function setActiveTabBtn(btn) {
+const setActiveTabBtn = (btn) => {
   tabsButtons.forEach(btn => btn.classList.remove('active'));
   btn.classList.add('active');
 }
 
 
 
-function setActiveTab(activeTabName) {
+const setActiveTab = (activeTabName) =>  {
   Array.prototype.forEach.call(planetDescriptionContent.children, tabContentEl => {
     if (tabContentEl.id === activeTabName) {
       tabContentEl.classList.add('active');
@@ -137,9 +139,39 @@ function setActiveTab(activeTabName) {
   });
 }
 
+const handleMobileLinkClick = (e) => {
+  e.preventDefault();
+  const link = e.currentTarget;
+  const planetId = link.getAttribute('id');
+  planetName = planetId.toLowerCase();
+  if (prevPlanetName && planetName === prevPlanetName) return;
+  prevPlanetName = planetName;
+  renderPlanetData();
+  toggleNavbar();
+};
+
+const mobileLinks = document.querySelectorAll('.mobile-link a');
+mobileLinks.forEach((link) => {
+  link.addEventListener('click', handleMobileLinkClick);
+});
+
+const toggleNavbar = () => {
+  const mobileNav = document.querySelector('.mobile-nav');
+  const navButton = document.querySelector('.icon-burger');
+  if (!mobileNav.classList.contains('hidden')) {
+    mobileNav.classList.add('hidden');
+    navButton.classList.remove('active-burger');
+  } else {
+    mobileNav.classList.remove('hidden');
+    navButton.classList.add('active-burger');
+  }
+};
+
+const navButton = document.querySelector('.icon-burger');
+navButton.addEventListener('click', toggleNavbar);
 
 
-function switchPlanetImage() {
+const switchPlanetImage = () => {
   const image = planetDescriptionImgWrapperEl.firstElementChild;
   image.src = planetData.images[imagesKeysByTab[activeTabName]];
 
@@ -147,3 +179,37 @@ function switchPlanetImage() {
     image.src = planetData.images.planet;
   }, { once: true });
 }
+
+const headOptions = document.querySelectorAll('.head-option');
+const underlineElements = document.querySelectorAll('.underline');
+
+const switchOption = (e) => {
+  const option = e.currentTarget;
+  const index = Array.from(headOptions).indexOf(option);
+  if (index === -1) return;
+
+  setActiveOption(index);
+};
+
+headOptions.forEach((option) => {
+  option.addEventListener('click', switchOption);
+});
+
+const setActiveOption = (index) => {
+  headOptions.forEach((option, i) => {
+    if (i === index) {
+      option.classList.add('active');
+      underlineElements[i].classList.add('active');
+    } else {
+      option.classList.remove('active');
+      underlineElements[i].classList.remove('active');
+    }
+  });
+  activeTabName = tabsButtons[index].dataset.tab;
+  setActiveTabBtn(tabsButtons[index]);
+  setActiveTab(activeTabName);
+  switchPlanetImage();
+  setPlanetInfo(activeTabName);
+};
+
+setActiveOption(0);
