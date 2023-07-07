@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='UTF-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Planets</title>
+    <link rel='stylesheet' href='./css/reset.css'>
+    <link rel='stylesheet' href='./css/style.css'>
+    <script src='./js/app.js' defer></script>
+  </head>
+
+  <body class='body'>
+    <header class='header'>
+      <h2 class='title'>The planets</h2>
+      <nav>
+        <ul class='nav_list'>
+          <li>
+            <a href='#mercury' data-planet='mercury'>Mercury</a>
+          </li>
+          <li>
+            <a href='#venus' data-planet='venus'>Venus</a>
+          </li>
+          <li>
+            <a href='#earth' data-planet='earth'>Earth</a>
+          </li>
+          <li>
+            <a href='#mars' data-planet='mars'>Mars</a>
+          </li>
+          <li>
+            <a href='#jupiter' data-planet='jupiter'>Jupiter</a>
+          </li>
+          <li>
+            <a href='#saturn' data-planet='saturn'>Saturn</a>
+          </li>
+          <li>
+            <a href='#uranus' data-planet='uranus'>Uranus</a>
+          </li>
+          <li>
+            <a href='#neptune' data-planet='neptune'>Neptune</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+
+
+
+    <main>
+      <section>
+        <div class='planet_description container'>
+          <div class='planet_description_img_wrapper'>
+            <img class='planet_description_img' alt='Planet Image' />
+          </div>
+
+          <div class='planet_description_body'>
+            <div class='planet_description_content'>
+              <h1 class='planet_description_title title'></h1>
+              <div>
+                <div class='planet_description_text text'></div>
+                <div class='planet_description_source text'>
+                  Source: <a href='/' class="planet_description_source_tag" target='_blank'>Wikipedia</a>
+                </div>
+              </div>
+
+            </div>
+
+            <ul class='planet_description_tabs'>
+              <li class='planet_description_tab'>
+                <button class='planet_description_btn active' type='button' data-tab='overview'>
+                  <span class='planet_description_tab_num text'>01</span>
+                  Overview
+                </button>
+              </li>
+              <li class='planet_description_tab'>
+                <button class='planet_description_btn' type='button' data-tab='structure'>
+                  <span class='planet_description_tab_num text'>02</span>
+                  Internal Structure
+                </button>
+              </li>
+              <li class='planet_description_tab'>
+                <button class='planet_description_btn' type='button' data-tab='geology'>
+                  <span class='planet_description_tab_num text'>03</span>
+                  Surface Geology
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class='planet_info'>
+        <div class='planet-info_container container'>
+          <div class='planet-info-item'>
+            <h3 class='planet-info-item_title text'>Rotation time</h3>
+            <div class='planet-info-item__text title planet_rotation'></div>
+          </div>
+
+          <div class='planet-info-item'>
+            <h3 class='planet-info-item_title text'>Revolution time</h3>
+            <div class='planet-info-item__text title planet_revolution'></div>
+          </div>
+
+          <div class='planet-info-item'>
+            <h3 class='planet-info-item_title text'>Radius</h3>
+            <div class='planet-info-item__text title planet_radius'></div>
+          </div>
+
+          <div class='planet-info-item'>
+            <h3 class='planet-info-item_title text'>Average Temp.</h3>
+            <div class='planet-info-item__text title planet_temp'></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+
+</html>
