@@ -217,9 +217,11 @@
   font-weight: 700;
   cursor: pointer;
 }
+
 .head-option p {
   opacity: 0.5;
 }
+
 .underline.active {
   height: 4px;
   width: 80px;
@@ -228,6 +230,7 @@
 .links {
   display: none;
 }
+
 main {
   padding-top: 50px;
 }
